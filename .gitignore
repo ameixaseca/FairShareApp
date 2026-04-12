@@ -1,0 +1,25 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+packages/
+
+# Node/TypeScript
+node_modules/
+dist/
+build/
+*.log
+
+# Environment
+.env
+.env.*
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vs

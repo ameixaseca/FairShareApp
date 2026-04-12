@@ -1,0 +1,6 @@
+{
+    "testRunParameters": {
+        "MaxCpuCount": 0,
+        "ResultsDirectory": "TestResults"
+    }
+}
