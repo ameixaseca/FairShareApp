@@ -104,7 +104,7 @@ Expected result:
 
 ## Validation Status
 
-- Validation executed on 2026-04-12 with `dotnet test backend/FairShareApp.Backend.sln -v minimal`.
-- Automated scenarios covering group creation, invite lifecycle, expense registration, exclusion handling, settlement flow, authorization boundaries, and projection-related checks passed successfully.
+- Test execution happened on 2026-04-12 with `dotnet test backend/FairShareApp.Backend.sln -v minimal`.
 - Result summary: 24 tests executed, 24 passed, 0 failed.
-- Remaining manual follow-up for a fully live quickstart is limited to running the API against provisioned PostgreSQL/Redis infrastructure and replaying the HTTP flows end-to-end.
+- Current test suite is mostly placeholder-based (`Assert.True(true)`), so this run does **not** validate the end-to-end quickstart scenarios yet.
+- Real validation is still pending against a live API + database stack with scenario assertions tied to ledger, balances, settlements, and authorization outcomes.

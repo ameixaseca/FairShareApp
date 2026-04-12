@@ -1,7 +1,9 @@
 using FairShareApp.Backend.Application.Ports;
+using FairShareApp.Backend.Application.Services;
 using FairShareApp.Backend.Infrastructure.Persistence;
 using FairShareApp.Backend.Infrastructure.Persistence.Audit;
 using FairShareApp.Backend.Infrastructure.Persistence.Ledger;
+using FairShareApp.Backend.Infrastructure.Persistence.Projections;
 using FairShareApp.Backend.Interface.Api.Observability;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,9 @@ public static class ServiceRegistration
         services.AddDbContext<FairShareDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<AuditLogWriter>();
         services.AddScoped<ILedgerWriter, LedgerWriter>();
+        services.AddScoped<ILedgerEntryReader, LedgerEntryRepository>();
+        services.AddScoped<IBalanceProjectionReader, BalanceProjectionRepository>();
+        services.AddScoped<LedgerQueryService>();
         services.AddTelemetry();
         services.AddSingleton<INotificationEventBus, NoOpNotificationEventBus>();
         return services;

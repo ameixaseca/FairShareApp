@@ -125,8 +125,8 @@
 
 ### Implementation for User Story 3
 
-- [x] T046 [P] [US3] Implement BalanceProjection read model repository in backend/src/Infrastructure/Persistence/Projections/BalanceProjectionRepository.cs
-- [x] T047 [P] [US3] Implement ledger query service in backend/src/Application/Services/LedgerQueryService.cs
+- [X] T046 [P] [US3] Implement BalanceProjection read model repository in backend/src/Infrastructure/Persistence/Projections/BalanceProjectionRepository.cs
+- [X] T047 [P] [US3] Implement ledger query service in backend/src/Application/Services/LedgerQueryService.cs
 - [x] T048 [US3] Implement get-balances endpoint in backend/src/Interface/Api/Controllers/BalancesController.cs
 - [x] T049 [US3] Implement get-ledger endpoint in backend/src/Interface/Api/Controllers/LedgerController.cs
 - [x] T050 [US3] Implement history response DTO mapping in backend/src/Interface/Api/Contracts/LedgerHistoryResponse.cs

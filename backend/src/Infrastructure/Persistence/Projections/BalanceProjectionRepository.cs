@@ -1,12 +1,37 @@
+using FairShareApp.Backend.Application.Ports;
+using Microsoft.EntityFrameworkCore;
+
 namespace FairShareApp.Backend.Infrastructure.Persistence.Projections;
 
-public sealed class BalanceProjectionRepository
+public sealed class BalanceProjectionRepository : IBalanceProjectionReader
 {
-    public Task<IReadOnlyList<UserBalanceProjection>> GetByGroupAsync(Guid groupId, CancellationToken cancellationToken = default)
+    private readonly FairShareDbContext _dbContext;
+
+    public BalanceProjectionRepository(FairShareDbContext dbContext)
     {
-        IReadOnlyList<UserBalanceProjection> result = new List<UserBalanceProjection>();
-        return Task.FromResult(result);
+        _dbContext = dbContext;
     }
 
-    public sealed record UserBalanceProjection(Guid UserId, decimal Balance, DateTimeOffset LastEventAt);
+    public async Task<IReadOnlyList<UserBalanceProjection>> GetByGroupAsync(Guid groupId, CancellationToken cancellationToken = default)
+    {
+        var entries = await _dbContext.LedgerEntries
+            .Where(x => x.GroupId == groupId)
+            .ToListAsync(cancellationToken);
+
+        var signedByUser = entries
+            .SelectMany(entry => new[]
+            {
+                new { UserId = entry.ToUserId, Delta = entry.Amount, entry.OccurredAt },
+                new { UserId = entry.FromUserId, Delta = -entry.Amount, entry.OccurredAt }
+            });
+
+        return signedByUser
+            .GroupBy(x => x.UserId)
+            .Select(group => new UserBalanceProjection(
+                group.Key,
+                group.Sum(x => x.Delta),
+                group.Max(x => x.OccurredAt)))
+            .OrderBy(x => x.UserId)
+            .ToArray();
+    }
 }

@@ -1,20 +1,31 @@
+using FairShareApp.Backend.Application.Ports;
 using FairShareApp.Backend.Domain.Ledger;
 
 namespace FairShareApp.Backend.Application.Services;
 
 public sealed class LedgerQueryService
 {
-    public Task<IReadOnlyList<UserBalanceProjection>> GetBalancesAsync(Guid groupId, CancellationToken cancellationToken = default)
+    private readonly IBalanceProjectionReader _balanceProjectionReader;
+    private readonly ILedgerEntryReader _ledgerEntryReader;
+
+    public LedgerQueryService(IBalanceProjectionReader balanceProjectionReader, ILedgerEntryReader ledgerEntryReader)
     {
-        IReadOnlyList<UserBalanceProjection> result = new List<UserBalanceProjection>();
-        return Task.FromResult(result);
+        _balanceProjectionReader = balanceProjectionReader;
+        _ledgerEntryReader = ledgerEntryReader;
     }
 
-    public Task<IReadOnlyList<LedgerEntry>> GetLedgerAsync(Guid groupId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<UserBalanceProjection>> GetBalancesAsync(Guid groupId, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<LedgerEntry> result = new List<LedgerEntry>();
-        return Task.FromResult(result);
+        var result = await _balanceProjectionReader.GetByGroupAsync(groupId, cancellationToken);
+        return result.OrderBy(x => x.UserId).ToArray();
     }
 
-    public sealed record UserBalanceProjection(Guid UserId, decimal Balance, DateTimeOffset LastEventAt);
+    public async Task<IReadOnlyList<LedgerEntry>> GetLedgerAsync(Guid groupId, CancellationToken cancellationToken = default)
+    {
+        var result = await _ledgerEntryReader.GetByGroupAsync(groupId, cancellationToken);
+        return result
+            .OrderByDescending(x => x.OccurredAt)
+            .ThenBy(x => x.Id)
+            .ToArray();
+    }
 }
