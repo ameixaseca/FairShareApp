@@ -31,6 +31,6 @@
 
 ## Notes
 
-- Validation passed on first iteration.
-- The specification uses business-facing language and contains no clarification markers.
-- Current scope assumes equal split by default and defers custom split rules to a future feature.
+- Validation rerun after incorporating review feedback.
+- The specification now covers invite lifecycle, authorization boundaries, expense correction, exclusion from split, auditability, and non-functional requirements.
+- Current scope keeps equal split as the default model, allows exclusion of participants per expense, and defers fully custom split ratios to a future feature.
