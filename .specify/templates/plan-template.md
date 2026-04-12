@@ -29,9 +29,41 @@
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-[Gates determined based on constitution file]
+**Code Clarity Validation**:
+
+- [ ] All names (classes, methods, variables) reveal intent and follow domain vocabulary
+- [ ] No clever/obscure solutions without explicit justification in Complexity Tracking
+- [ ] Public interfaces are explicit about behavior and side effects
+
+**SOLID Compliance Validation**:
+
+- [ ] Each class/module has single responsibility (one reason to change)
+- [ ] Extensions planned without modifying existing tested code
+- [ ] Dependencies are on abstractions (interfaces), not concrete implementations
+- [ ] No forced dependencies on unused interface methods
+
+**Test-First Validation**:
+
+- [ ] Test plan included in specification before any implementation
+- [ ] Tests are written for acceptance criteria before implementation begins
+- [ ] Test structure follows AAA (Arrange, Act, Assert) pattern
+- [ ] Integration tests planned for external boundaries (API, database, file system)
+
+**Security Validation**:
+
+- [ ] No secrets, tokens, or credentials in any committed files
+- [ ] All external input validation planned (API requests, file uploads, user input)
+- [ ] Mobile app uses expo-secure-store for sensitive data (tokens, credentials)
+- [ ] Infrastructure dependencies (database, external APIs) have security review
+
+**Architecture Validation**:
+
+- [ ] Clear separation: Domain → Application → Infrastructure → Interface layers
+- [ ] Domain/business logic has no infrastructure dependencies
+- [ ] Mobile code does not import server-side modules (`services/`, `lib/prisma.ts`)
+- [ ] Shared types defined in `packages/shared/types` to prevent duplication
 
 ## Project Structure
 
@@ -48,6 +80,7 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
+
 <!--
   ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
   for this feature. Delete unused options and expand the chosen structure with
@@ -98,7 +131,7 @@ directories captured above]
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |
