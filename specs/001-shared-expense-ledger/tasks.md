@@ -173,8 +173,8 @@
 - [x] T066 [P] Add load test suite for ledger write and projection SLA in backend/tests/load/LedgerProjectionLatencyLoadTests.cs
 - [x] T067 Add API documentation and endpoint examples in backend/src/Interface/Api/Docs/SharedExpenseLedgerExamples.md
 - [x] T068 [P] Add security regression tests for role and tenant boundaries in backend/tests/integration/Security/RbacAndTenantBoundaryTests.cs
-- [X] T069 Run and validate quickstart scenarios in specs/001-shared-expense-ledger/quickstart.md
-- [X] T070 Final cleanup and naming consistency pass in backend/src/
+- [x] T069 Run and validate quickstart scenarios in specs/001-shared-expense-ledger/quickstart.md
+- [x] T070 Final cleanup and naming consistency pass in backend/src/
 
 ---
 
