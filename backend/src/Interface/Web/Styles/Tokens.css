@@ -1,0 +1,62 @@
+:root {
+    --fs-font-headline: "Segoe UI Variable", "Aptos Display", "Trebuchet MS", sans-serif;
+    --fs-font-body: "Segoe UI", "Aptos", sans-serif;
+    --fs-surface: #f6f7f8;
+    --fs-surface-card: #ffffff;
+    --fs-accent-primary: #005c53;
+    --fs-positive: #0a7f3f;
+    --fs-negative: #a6322b;
+    --fs-neutral: #4e5a66;
+    --fs-border: #d6dce2;
+    --fs-shadow: 0 8px 24px rgba(20, 35, 55, 0.08);
+}
+
+body {
+    font-family: var(--fs-font-body);
+    background: radial-gradient(circle at 15% 20%, #eef7f5 0, #f8f9fb 40%, #edf0f7 100%);
+    color: #1e2833;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--fs-font-headline);
+    letter-spacing: 0.01em;
+}
+
+.financial-card {
+    border: 1px solid var(--fs-border);
+    border-radius: 16px;
+    padding: 1rem;
+    background: var(--fs-surface-card);
+    box-shadow: var(--fs-shadow);
+}
+
+.amount {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.amount-positive {
+    color: var(--fs-positive);
+}
+
+.amount-negative {
+    color: var(--fs-negative);
+}
+
+.fs-callout {
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.fs-callout-ok {
+    background: #e8f8ef;
+    color: #155a32;
+}
+
+.fs-callout-warning {
+    background: #fff5e7;
+    color: #7e5a1b;
+}

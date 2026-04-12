@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main class="px-4 py-3">
+        <div class="top-row">
+            <h2>FairShare Financial Workspace</h2>
+            <div class="summary-slot">Projection Window: 5s</div>
+        </div>
+
+        <section class="fs-grid-2 mb-3">
+            <div class="financial-card">
+                <strong>Fast Actions</strong>
+                <div><a href="/groups">Groups</a> | <a href="/settings/notifications">Preferences</a></div>
+            </div>
+            <div class="financial-card">
+                <strong>Data Freshness</strong>
+                <div class="amount amount-positive">Healthy</div>
+            </div>
+        </section>
+
+        <article class="content">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

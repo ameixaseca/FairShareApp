@@ -1,0 +1,9 @@
+@page "/groups/{GroupId:guid}/invites"
+
+<h1>Invites</h1>
+
+<FairShareApp.Backend.Web.Components.Groups.InvitePanel GroupId="GroupId" />
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+}

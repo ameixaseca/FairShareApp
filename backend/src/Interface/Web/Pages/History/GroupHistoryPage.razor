@@ -1,0 +1,36 @@
+@page "/groups/{GroupId:guid}/history"
+@using FairShareApp.Backend.Web.Models.Dashboard
+@inject FairShareApp.Backend.Web.Services.ApiClients.BalancesApiClient BalancesApiClient
+
+<h1>History</h1>
+
+<table class="table fs-table">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in _entries.OrderByDescending(e => e.OccurredAt))
+        {
+            <tr>
+                <td>@entry.OccurredAt.LocalDateTime.ToString("g")</td>
+                <td>@entry.Description</td>
+                <td class="amount">@entry.Amount.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private IReadOnlyList<LedgerEntryView> _entries = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _entries = await BalancesApiClient.GetHistoryAsync(GroupId);
+    }
+}

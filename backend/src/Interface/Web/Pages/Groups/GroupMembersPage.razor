@@ -1,0 +1,37 @@
+@page "/groups/{GroupId:guid}/members"
+@using FairShareApp.Backend.Web.Models.Groups
+@inject FairShareApp.Backend.Web.Services.ApiClients.GroupsApiClient GroupsApiClient
+@inject FairShareApp.Backend.Web.Services.Auth.AuthorizationViewPolicyService PolicyService
+
+<h1>Group Members</h1>
+
+<ul class="fs-list">
+    @foreach (var member in _members)
+    {
+        <li>
+            @member.DisplayName (@member.Role)
+            @if (PolicyService.CanManageMembers(CurrentRole))
+            {
+                <button class="btn btn-link" @onclick="() => RemoveAsync(member.Id)">Remove</button>
+            }
+        </li>
+    }
+</ul>
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private IReadOnlyList<GroupMember> _members = [];
+    private string CurrentRole { get; set; } = "Owner";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _members = await GroupsApiClient.GetMembersAsync(GroupId);
+    }
+
+    private async Task RemoveAsync(Guid memberId)
+    {
+        await GroupsApiClient.RemoveMemberAsync(GroupId, memberId);
+        _members = await GroupsApiClient.GetMembersAsync(GroupId);
+    }
+}

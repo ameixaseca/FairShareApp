@@ -1,0 +1,53 @@
+@page "/groups/{GroupId:guid}/settlements/new"
+@inject FairShareApp.Backend.Web.Services.ApiClients.SettlementsApiClient SettlementsApiClient
+@inject FairShareApp.Backend.Web.Services.Validation.SettlementValidators SettlementValidators
+@inject FairShareApp.Backend.Web.Services.Caching.ExpenseMutationCacheHandler CacheHandler
+
+<h1>Create Settlement</h1>
+
+<label>From User</label>
+<input class="form-control" @bind="_fromUserId" />
+<label>To User</label>
+<input class="form-control" @bind="_toUserId" />
+<label>Amount</label>
+<input class="form-control" type="number" step="0.01" @bind="_amount" />
+<button class="btn btn-primary" @onclick="CreateAsync">Settle</button>
+
+@if (_errors.Count > 0)
+{
+    <ul class="text-danger">
+        @foreach (var error in _errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private string _fromUserId = string.Empty;
+    private string _toUserId = string.Empty;
+    private decimal _amount = 0m;
+    private List<string> _errors = [];
+
+    private async Task CreateAsync()
+    {
+        var validation = SettlementValidators.Validate(_amount, maxAllowed: 100000m);
+        _errors = validation.Errors.ToList();
+        if (!validation.IsValid)
+        {
+            return;
+        }
+
+        if (!Guid.TryParse(_fromUserId, out var fromUserId) || !Guid.TryParse(_toUserId, out var toUserId))
+        {
+            _errors = ["From and To users must be valid UUID values."];
+            return;
+        }
+
+        var request = new FairShareApp.Backend.Web.Models.Settlements.CreateSettlementRequest(GroupId, fromUserId, toUserId, _amount);
+        await SettlementsApiClient.CreateSettlementAsync(request);
+        CacheHandler.HandleMutation(GroupId);
+    }
+}

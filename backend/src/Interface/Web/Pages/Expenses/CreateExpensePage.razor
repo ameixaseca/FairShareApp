@@ -1,0 +1,15 @@
+@page "/groups/{GroupId:guid}/expenses/new"
+@inject FairShareApp.Backend.Web.Services.Preloading.ExpensePreloadService ExpensePreloadService
+
+<h1>Create Expense</h1>
+
+<FairShareApp.Backend.Web.Components.Expenses.QuickExpenseEntry GroupId="GroupId" />
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return ExpensePreloadService.PreloadExpenseFormAsync(GroupId);
+    }
+}

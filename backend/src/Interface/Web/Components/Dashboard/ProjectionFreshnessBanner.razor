@@ -1,0 +1,15 @@
+<div class="fs-callout @CssClass">
+    Last projection update: @LastProjectionUtc.LocalDateTime.ToString("g")
+    <button class="btn btn-link" @onclick="RefreshClicked">Refresh now</button>
+</div>
+
+@code {
+    [Parameter] public DateTimeOffset LastProjectionUtc { get; set; }
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    private string CssClass => DateTimeOffset.UtcNow - LastProjectionUtc > TimeSpan.FromSeconds(5)
+        ? "fs-callout-warning"
+        : "fs-callout-ok";
+
+    private Task RefreshClicked() => OnRefresh.InvokeAsync();
+}

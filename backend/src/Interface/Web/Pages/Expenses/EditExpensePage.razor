@@ -1,0 +1,32 @@
+@page "/groups/{GroupId:guid}/expenses/{ExpenseId:guid}/edit"
+@inject FairShareApp.Backend.Web.Services.ApiClients.ExpensesApiClient ExpensesApiClient
+@inject FairShareApp.Backend.Web.Services.Validation.ExpenseValidators ExpenseValidators
+
+<h1>Edit Expense</h1>
+
+<label>Description</label>
+<input class="form-control" @bind="_description" />
+<label>Amount</label>
+<input class="form-control" type="number" step="0.01" @bind="_amount" />
+<button class="btn btn-primary" @onclick="SaveAsync">Save</button>
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+    [Parameter] public Guid ExpenseId { get; set; }
+
+    private string _description = "";
+    private decimal _amount = 0m;
+
+    private async Task SaveAsync()
+    {
+        var validation = ExpenseValidators.Validate(_amount, _description);
+        if (!validation.IsValid)
+        {
+            return;
+        }
+
+        await ExpensesApiClient.UpdateExpenseAsync(
+            ExpenseId,
+            new FairShareApp.Backend.Web.Models.Expenses.UpdateExpenseRequest(_amount, _description, []));
+    }
+}

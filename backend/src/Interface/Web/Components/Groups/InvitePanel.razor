@@ -1,0 +1,52 @@
+@using FairShareApp.Backend.Web.Models.Groups
+@inject FairShareApp.Backend.Web.Services.ApiClients.InvitesApiClient InvitesApiClient
+
+<div class="card financial-card">
+    <h3>Invites</h3>
+    <button class="btn btn-primary" @onclick="CreateInvite">Create invite</button>
+
+    <ul class="fs-list">
+        @foreach (var invite in _invites)
+        {
+            <li>
+                <span>@invite.Recipient (@invite.Status)</span>
+                <button class="btn btn-link" @onclick="() => RevokeInvite(invite.Id)">Revoke</button>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private IReadOnlyList<InviteView> _invites = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (GroupId == Guid.Empty)
+        {
+            _invites = [];
+            return;
+        }
+
+        _invites = await InvitesApiClient.GetInvitesAsync(GroupId);
+    }
+
+    private async Task CreateInvite()
+    {
+        if (GroupId == Guid.Empty)
+        {
+            return;
+        }
+
+        var invite = new CreateInviteRequest("Link", "new.member@fairshare.app", DateTimeOffset.UtcNow.AddDays(7));
+        await InvitesApiClient.CreateInviteAsync(GroupId, invite);
+        _invites = await InvitesApiClient.GetInvitesAsync(GroupId);
+    }
+
+    private async Task RevokeInvite(Guid inviteId)
+    {
+        await InvitesApiClient.RevokeInviteAsync(GroupId, inviteId);
+        _invites = await InvitesApiClient.GetInvitesAsync(GroupId);
+    }
+}
