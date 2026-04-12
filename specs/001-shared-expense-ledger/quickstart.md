@@ -101,3 +101,10 @@ Expected result:
 
 - Values reconcile without manual correction.
 - Trace/correlation identifiers allow operation tracking in logs.
+
+## Validation Status
+
+- Validation executed on 2026-04-12 with `dotnet test backend/FairShareApp.Backend.sln -v minimal`.
+- Automated scenarios covering group creation, invite lifecycle, expense registration, exclusion handling, settlement flow, authorization boundaries, and projection-related checks passed successfully.
+- Result summary: 24 tests executed, 24 passed, 0 failed.
+- Remaining manual follow-up for a fully live quickstart is limited to running the API against provisioned PostgreSQL/Redis infrastructure and replaying the HTTP flows end-to-end.
