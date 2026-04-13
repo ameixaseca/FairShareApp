@@ -4,12 +4,16 @@ obj/
 *.user
 *.suo
 packages/
+wwwroot/
 
 # Node/TypeScript
 node_modules/
 dist/
 build/
 *.log
+coverage/
+playwright-report/
+test-results/
 
 # Environment
 .env
