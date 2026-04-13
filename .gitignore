@@ -4,6 +4,7 @@ obj/
 *.user
 *.suo
 packages/
+wwwroot/
 
 # Node/TypeScript
 node_modules/

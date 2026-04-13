@@ -55,10 +55,17 @@ test.describe('US0 auth flow', () => {
     await page.getByRole('button', { name: 'Criar conta' }).click()
 
     await expect(page).toHaveURL(/\/login$/)
+    await expect(page.getByRole('heading', { name: 'Entrar' })).toBeVisible()
 
-    await page.getByLabel('E-mail').fill(`user${random}@example.com`)
-    await page.getByLabel('Senha').fill('12345678')
-    await page.getByRole('button', { name: 'Entrar' }).click()
+    const loginForm = page
+      .locator('form')
+      .filter({ has: page.getByRole('button', { name: 'Entrar' }) })
+
+    await loginForm.getByLabel('E-mail').fill(`user${random}@example.com`)
+    await loginForm.getByLabel('Senha').fill('12345678')
+    const loginButton = loginForm.getByRole('button', { name: 'Entrar' })
+    await expect(loginButton).toBeEnabled()
+    await loginButton.click()
 
     await expect(page).toHaveURL(/\/groups$/)
   })

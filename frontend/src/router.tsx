@@ -1,23 +1,39 @@
+import { Suspense, lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { RequireAuth } from './components/guards/RequireAuth'
 import { RedirectIfAuth } from './components/guards/RedirectIfAuth'
 import { AppLayout } from './components/layout/AppLayout'
 import { PublicLayout } from './components/layout/PublicLayout'
-import { CreateExpensePage } from './pages/CreateExpensePage'
-import { CreateGroupPage } from './pages/CreateGroupPage'
-import { CreateSettlementPage } from './pages/CreateSettlementPage'
-import { EditExpensePage } from './pages/EditExpensePage'
-import { ExpenseListPage } from './pages/ExpenseListPage'
-import { GroupDashboardPage } from './pages/GroupDashboardPage'
-import { GroupsListPage } from './pages/GroupsListPage'
-import { InvitesPage } from './pages/InvitesPage'
-import { LandingPage } from './pages/LandingPage'
-import { LedgerHistoryPage } from './pages/LedgerHistoryPage'
-import { LoginPage } from './pages/LoginPage'
-import { MembersPage } from './pages/MembersPage'
-import { NotFoundPage } from './pages/NotFoundPage'
-import { NotificationPreferencesPage } from './pages/NotificationPreferencesPage'
-import { RegisterPage } from './pages/RegisterPage'
+
+const LandingPage = lazy(() => import('./pages/LandingPage').then((module) => ({ default: module.LandingPage })))
+const RegisterPage = lazy(() => import('./pages/RegisterPage').then((module) => ({ default: module.RegisterPage })))
+const LoginPage = lazy(() => import('./pages/LoginPage').then((module) => ({ default: module.LoginPage })))
+const GroupsListPage = lazy(() => import('./pages/GroupsListPage').then((module) => ({ default: module.GroupsListPage })))
+const CreateGroupPage = lazy(() => import('./pages/CreateGroupPage').then((module) => ({ default: module.CreateGroupPage })))
+const GroupDashboardPage = lazy(() =>
+  import('./pages/GroupDashboardPage').then((module) => ({ default: module.GroupDashboardPage })),
+)
+const ExpenseListPage = lazy(() => import('./pages/ExpenseListPage').then((module) => ({ default: module.ExpenseListPage })))
+const CreateExpensePage = lazy(() =>
+  import('./pages/CreateExpensePage').then((module) => ({ default: module.CreateExpensePage })),
+)
+const EditExpensePage = lazy(() => import('./pages/EditExpensePage').then((module) => ({ default: module.EditExpensePage })))
+const CreateSettlementPage = lazy(() =>
+  import('./pages/CreateSettlementPage').then((module) => ({ default: module.CreateSettlementPage })),
+)
+const LedgerHistoryPage = lazy(() =>
+  import('./pages/LedgerHistoryPage').then((module) => ({ default: module.LedgerHistoryPage })),
+)
+const MembersPage = lazy(() => import('./pages/MembersPage').then((module) => ({ default: module.MembersPage })))
+const InvitesPage = lazy(() => import('./pages/InvitesPage').then((module) => ({ default: module.InvitesPage })))
+const NotificationPreferencesPage = lazy(() =>
+  import('./pages/NotificationPreferencesPage').then((module) => ({ default: module.NotificationPreferencesPage })),
+)
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })))
+
+const withSuspense = (element: React.JSX.Element): React.JSX.Element => (
+  <Suspense fallback={<div className="p-4 text-sm text-slate-500">Carregando...</div>}>{element}</Suspense>
+)
 
 export const router = createBrowserRouter([
   {
@@ -26,9 +42,9 @@ export const router = createBrowserRouter([
       {
         element: <PublicLayout />,
         children: [
-          { path: '/', element: <LandingPage /> },
-          { path: '/register', element: <RegisterPage /> },
-          { path: '/login', element: <LoginPage /> },
+          { path: '/', element: withSuspense(<LandingPage />) },
+          { path: '/register', element: withSuspense(<RegisterPage />) },
+          { path: '/login', element: withSuspense(<LoginPage />) },
         ],
       },
     ],
@@ -39,21 +55,21 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/groups', element: <GroupsListPage /> },
-          { path: '/groups/new', element: <CreateGroupPage /> },
-          { path: '/groups/:groupId', element: <GroupDashboardPage /> },
-          { path: '/expenses', element: <ExpenseListPage /> },
-          { path: '/expenses/new', element: <CreateExpensePage /> },
-          { path: '/expenses/:expenseId/edit', element: <EditExpensePage /> },
-          { path: '/balances', element: <GroupDashboardPage /> },
-          { path: '/settlements/new', element: <CreateSettlementPage /> },
-          { path: '/history', element: <LedgerHistoryPage /> },
-          { path: '/members', element: <MembersPage /> },
-          { path: '/invites', element: <InvitesPage /> },
-          { path: '/preferences', element: <NotificationPreferencesPage /> },
+          { path: '/groups', element: withSuspense(<GroupsListPage />) },
+          { path: '/groups/new', element: withSuspense(<CreateGroupPage />) },
+          { path: '/groups/:groupId', element: withSuspense(<GroupDashboardPage />) },
+          { path: '/expenses', element: withSuspense(<ExpenseListPage />) },
+          { path: '/expenses/new', element: withSuspense(<CreateExpensePage />) },
+          { path: '/expenses/:expenseId/edit', element: withSuspense(<EditExpensePage />) },
+          { path: '/balances', element: withSuspense(<GroupDashboardPage />) },
+          { path: '/settlements/new', element: withSuspense(<CreateSettlementPage />) },
+          { path: '/history', element: withSuspense(<LedgerHistoryPage />) },
+          { path: '/members', element: withSuspense(<MembersPage />) },
+          { path: '/invites', element: withSuspense(<InvitesPage />) },
+          { path: '/preferences', element: withSuspense(<NotificationPreferencesPage />) },
         ],
       },
     ],
   },
-  { path: '*', element: <NotFoundPage /> },
+  { path: '*', element: withSuspense(<NotFoundPage />) },
 ])

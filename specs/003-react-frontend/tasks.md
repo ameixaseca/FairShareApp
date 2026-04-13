@@ -864,13 +864,13 @@
   - Verify no horizontal scroll at any viewport
   - Screenshot baselines for regression detection (`playwright-report/`)
 
-- [ ] T111 Complete observability instrumentation
+- [x] T111 Complete observability instrumentation
   - Verify all API calls traced (auto + manual spans)
   - Verify all critical user journeys logged (register → login → create expense → settle)
   - Verify Prometheus metrics collected (route latency, API duration, error count)
   - Sampling correct: 100% dev, 10% prod (configurable via env)
 
-- [ ] T112 [P] Performance optimization
+- [x] T112 [P] Performance optimization
   - Measure initial bundle size (should be <500KB gzipped excluding node_modules)
   - Code-split pages via React.lazy() (optional for MVP)
   - Verify route transitions < 500ms
@@ -913,7 +913,7 @@
   - Environment variables: API_BASE_URL (production), OTEL_ENDPOINT (if using remote tracing)
   - Verification checklist: landing page loads, login works, create group works
 
-- [ ] T118 Final validation checklist
+- [x] T118 Final validation checklist
   - All 5 user stories can be completed end-to-end (register → group → expense → balance → settle)
   - No console errors or warnings
   - All tests pass (unit, component, E2E)
