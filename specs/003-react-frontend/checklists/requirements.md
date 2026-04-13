@@ -2,6 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2026-04-12  
+**Last Updated**: 2026-04-12 (Amendment: landing page, registro, login, identidade visual)  
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -31,8 +32,10 @@
 
 ## Notes
 
-- All 22 functional requirements are testable and unambiguous.
-- FR-020 and FR-021 capture the key architectural constraints (same-server delivery and SPA navigation) in technology-agnostic terms.
-- Assumption section explicitly documents that the previous Blazor implementation will be removed (no dual support).
-- SC-006 and SC-007 added relative to spec 002 to address the same-server loading and SPA navigation performance expectations from the user's description.
+- All 27 functional requirements are testable and unambiguous.
+- FR-023..027 added by amendment covering: landing page pública (FR-023), registro (FR-024), login (FR-025), redirecionamento de autenticados (FR-026), identidade visual financeira (FR-027).
+- User Story 0 added as P1 prerequisite para todos os demais fluxos.
+- Edge cases de enumeração de contas (registro com e-mail duplicado, credenciais incorretas) adicionados.
+- SC-008..010 adicionados para medir conversão de registro, tempo de onboarding e percepção de identidade visual.
+- Assumption adicionada: backend provê endpoints de registro e autenticação; landing page é rota raiz pública.
 - Spec is ready to proceed to `/speckit.plan`.

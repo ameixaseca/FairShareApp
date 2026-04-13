@@ -3,9 +3,28 @@
 **Feature Branch**: `003-react-frontend`  
 **Created**: 2026-04-12  
 **Status**: Draft  
-**Input**: User description: "quero mudar a especificação atual para o frontend. Quero desfazer o frontend implementado em Blazor e implementar ele agora em reactjs. No entanto, é importante que o build do react seja servido pelo mesmo servidor que a api"
+**Input**: User description: "quero mudar a especificação atual para o frontend. Quero desfazer o frontend implementado em Blazor e implementar ele agora em reactjs. No entanto, é importante que o build do react seja servido pelo mesmo servidor que a api"  
+**Amendment**: "inclua na especificação 003 os seguintes requisitos: o frontend deve contar com uma landing page de marketing, uma página de registro de novos usuários e outra de login. O layout deve ser moderno e adequado a aplicações financeiras"
 
 ## User Scenarios & Testing _(mandatory)_
+
+### User Story 0 - Descobrir o produto e criar conta (Priority: P1)
+
+Como visitante sem conta, quero encontrar uma página pública que apresente o produto, criar minha conta e acessar a aplicação pelo fluxo de login para começar a usar o controle de despesas compartilhadas.
+
+**Why this priority**: Sem possibilidade de registro e login não há usuários ativos; todos os demais fluxos dependem de um usuário autenticado.
+
+**Independent Test**: Um visitante acessa a página pública, lê a proposta de valor do produto, clica em "criar conta", preenche os dados, conclui o registro e, em seguida, realiza login com sucesso sendo redirecionado à área funcional.
+
+**Acceptance Scenarios**:
+
+1. **Given** um visitante não autenticado, **When** ele acessa o endereço raiz da aplicação, **Then** visualiza a landing page com apresentação do produto e chamada para registro.
+2. **Given** a landing page, **When** o visitante clica em criar conta e preenche dados válidos (nome, e-mail, senha), **Then** a conta é criada e ele é encaminhado para o login.
+3. **Given** o formulário de registro, **When** o visitante fornece um e-mail já cadastrado, **Then** o sistema rejeita o cadastro com mensagem clara sem revelar dados de outros usuários.
+4. **Given** um usuário com conta, **When** ele preenche e-mail e senha corretos na página de login, **Then** é autenticado e redirecionado à área funcional da aplicação.
+5. **Given** um usuário já autenticado, **When** ele tenta acessar a landing page ou página de login, **Then** é redirecionado automaticamente para a área funcional sem repetir o login.
+
+---
 
 ### User Story 1 - Operar grupos e membros (Priority: P1)
 
@@ -83,6 +102,9 @@ Como membro com pendências financeiras, quero registrar quitações parciais ou
 - Saída do responsável atual sem transferência prévia de responsabilidade deve ser bloqueada.
 - Perda de conectividade durante preenchimento de formulário não deve descartar dados inseridos pelo usuário.
 - Navegação rápida entre telas não deve exibir dados de um grupo em vez de outro.
+- Tentativa de registro com e-mail já cadastrado deve ser rejeitada sem confirmar se o e-mail pertence a outro usuário.
+- Tentativa de login com credenciais incorretas deve ser rejeitada com mensagem genérica sem indicar qual campo está errado (proteção contra enumeração de contas).
+- Formulários de registro e login devem ser acessíveis sem autenticação prévia e não devem exigir estado de sessão pré-existente.
 
 ## Requirements _(mandatory)_
 
@@ -110,6 +132,11 @@ Como membro com pendências financeiras, quero registrar quitações parciais ou
 - **FR-020**: O sistema MUST ser disponibilizado como interface web entregue diretamente pelo mesmo servidor que hospeda a API do produto, sem exigir um servidor dedicado separado ou um domínio/porta distinto para o usuário final.
 - **FR-021**: O sistema MUST atualizar o conteúdo da tela sem recarregamento completo de página ao navegar entre seções, garantindo experiência fluida de aplicação de página única.
 - **FR-022**: O sistema MUST preservar o estado de autenticação e reautenticar o usuário transparentemente ao retornar à aplicação após período inativo, sem perda de dados de navegação.
+- **FR-023**: O sistema MUST apresentar uma página pública de apresentação do produto acessível sem autenticação, com proposta de valor, principais benefícios e chamada para ação de registro.
+- **FR-024**: O sistema MUST oferecer página dedicada de registro de nova conta com coleta de nome, e-mail e senha, com validação dos dados antes de confirmar a criação.
+- **FR-025**: O sistema MUST oferecer página dedicada de login com autenticação por e-mail e senha e mensagem de erro genérica em caso de credenciais incorretas.
+- **FR-026**: O sistema MUST redirecionar automaticamente o usuário autenticado que acesse a landing page ou a página de login para a área funcional, sem exibir telas de acesso público.
+- **FR-027**: O sistema MUST aplicar identidade visual consistente em todas as telas — incluindo landing page, registro, login e área funcional — com padrão de apresentação que transmita confiança, clareza e adequação ao segmento financeiro.
 
 ### Key Entities _(include if feature involves data)_
 
@@ -122,6 +149,7 @@ Como membro com pendências financeiras, quero registrar quitações parciais ou
 - **Obrigação**: pendência entre pares de membros indicando valor ainda devido.
 - **Movimentação**: registro cronológico de eventos financeiros e alterações críticas.
 - **Preferência de Notificação**: configuração individual de canais de aviso para eventos relevantes.
+- **Usuário**: pessoa com conta registrada, credenciais de acesso e perfil básico (nome, e-mail).
 
 ## Success Criteria _(mandatory)_
 
@@ -134,6 +162,9 @@ Como membro com pendências financeiras, quero registrar quitações parciais ou
 - **SC-005**: Menos de 2% das tentativas de operação válida resultam em abandono do fluxo por mensagens de erro pouco claras.
 - **SC-006**: O tempo de carregamento inicial da interface, a partir do mesmo servidor que hospeda a API, não ultrapassa 3 segundos em conexões padrão.
 - **SC-007**: A transição entre seções da aplicação ocorre em menos de 500 ms sem recarregamento de página perceptível pelo usuário.
+- **SC-008**: Pelo menos 80% dos visitantes que iniciam o processo de registro na landing page concluem a criação de conta.
+- **SC-009**: O processo completo de registro de nova conta é concluído pelo usuário em até 2 minutos na primeira tentativa.
+- **SC-010**: A identidade visual da aplicação é avaliada como transmissora de confiança e adequada ao segmento financeiro por pelo menos 85% dos usuários em testes de percepção.
 
 ## Assumptions
 
@@ -144,3 +175,6 @@ Como membro com pendências financeiras, quero registrar quitações parciais ou
 - A primeira entrega cobre os fluxos essenciais de operação diária de grupos e não inclui canais avançados de atendimento fora da própria interface.
 - A gestão de permissões de papel é fornecida pelo domínio existente e consumida pela interface para controle de ações.
 - A interface anterior (Blazor) será removida do servidor junto com a introdução desta nova entrega; não há suporte simultâneo das duas implementações.
+- O backend já disponibiliza endpoints de registro de nova conta e autenticação por credenciais (e-mail e senha).
+- A landing page é a rota raiz pública da aplicação; usuários autenticados são redirecionados desta rota para a área funcional.
+- O padrão de identidade visual (paleta de cores, tipografia e densidade de informação) será definido durante a fase de design, mas deve ser coerente com aplicações do segmento financeiro em todas as telas desde a primeira entrega.
