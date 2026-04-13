@@ -1,0 +1,17 @@
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
+
+export const RequireAuth = (): React.JSX.Element => {
+  const location = useLocation()
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return <div className="p-6 text-sm text-slate-500">Carregando sessão...</div>
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  }
+
+  return <Outlet />
+}

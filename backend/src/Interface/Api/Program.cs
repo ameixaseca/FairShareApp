@@ -18,11 +18,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseStaticFiles();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<JwtAuthMiddleware>();
 app.UseMiddleware<TenantContextMiddleware>();
 app.UseMiddleware<IdempotencyMiddleware>();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
